@@ -9,6 +9,8 @@
 // @icon         https://www.google.com/s2/favicons?domain=youtube.com
 // @run-at       document-end
 // @grant        none
+// @updateURL    https://github.com/TheAlan404/userscripts/raw/main/YoutubeKeybinds.user.js
+// @downloadURL  https://github.com/TheAlan404/userscripts/raw/main/YoutubeKeybinds.user.js
 // ==/UserScript==
 
 (function() {
