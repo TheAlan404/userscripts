@@ -1,9 +1,7 @@
 // ==UserScript==
 // @name         YoutubeKeybinds
 // @version      0.2
-// @description  'S' => search box
-//               'R' => related/recommended videos
-//               'B' => unfocus/focus to body (can be used to navigate to search box after pressing R)
+// @description  'S' => search box\n'R' => related/recommended videos\n'B' => unfocus/focus to body (can be used to navigate to search box after pressing R)
 // @author       Dennis_#3272
 // @match        https://www.youtube.com/watch*
 // @icon         https://www.google.com/s2/favicons?domain=youtube.com
