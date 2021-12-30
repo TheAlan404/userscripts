@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         YoutubeKeybinds
-// @version      0.2
-// @description  'S' => search box\n'R' => related/recommended videos\n'B' => unfocus/focus to body (can be used to navigate to search box after pressing R)
+// @version      0.3
+// @description  'S' => search box
+//               'R' => related/recommended videos
+//               'B' => unfocus/focus to body (can be used to navigate to search box after pressing R)
 // @author       Dennis_#3272
-// @match        https://www.youtube.com/watch*
+// @match        https://www.youtube.com/*
 // @icon         https://www.google.com/s2/favicons?domain=youtube.com
 // @run-at       document-end
 // @grant        none
@@ -15,31 +17,31 @@
     'use strict';
 
     setTimeout(() => {
-        const search = document.getElementsByTagName("input").search;
-        const related = document.getElementsByClassName("style-scope ytd-watch-next-secondary-results-renderer")[1];
-
-        window.__related = related;
-        console.log(related);
+        const search = () => document.getElementsByTagName("input").search;
+        const related = () => document.getElementsByClassName("style-scope ytd-watch-next-secondary-results-renderer")[1];
 
         const keybinds = {
-            s: [true, () => {
-                search.focus();
-                search.select();
+            s: [{ body: true, playerOnly: false }, () => {
+                search().focus();
+                search().select();
             }],
-            r: [true, () => {
+            r: [{ body: true, playerOnly: true }, () => {
                 // Proof that im a shitcoder:
-                related.children[0].children[0].children[0].children[0].focus();
+                related().children[0].children[0].children[0].children[0].focus();
             }],
-            b: [
-                (e) => ["A", "BUTTON"].includes(e.target.tagName),
-                () => document.activeElement.blur()],
+            b: [{ playerOnly: false, filter: (e) => ["A", "BUTTON"].includes(e.target.tagName) },
+                () => document.activeElement.blur()
+            ],
         };
 
         window.addEventListener("keypress", (e) => {
             let k = e.key.toLowerCase();
-            if(!keybinds[k] || (keybinds[k][0] === true && e.target != document.body)) return;
-            if(typeof(keybinds[k][0]) == "function" && !keybinds[k][0](e)) return;
-            e.preventDefault()
+            if(!keybinds[k]) return;
+            let sets = keybinds[k][0];
+            if(sets.body && e.target != document.body) return;
+            if(sets.filter && !sets.filter(e)) return;
+            if(sets.playerOnly && window.location.pathname != "/watch") return;
+            e.preventDefault();
             keybinds[k][1]();
             console.log(`[YoutubeSearchKeybind] Keybind '${k}' was pressed`);
         });
